@@ -85,10 +85,7 @@ public class ProductService implements ProductServiceInterface {
         ProductModel product = repository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Product not found"));
 
-        product.setName(dto.getName());
-        product.setDescription(dto.getDescription());
-        product.setActive(dto.getActive());
-
+        mapper.updateEntity(product, dto);
         product.getMaterials().clear();
 
         if (dto.getMaterials() != null && !dto.getMaterials().isEmpty()) {
