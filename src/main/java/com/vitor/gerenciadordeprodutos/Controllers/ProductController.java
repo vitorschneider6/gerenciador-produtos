@@ -1,6 +1,7 @@
 package com.vitor.gerenciadordeprodutos.Controllers;
 
 import com.vitor.gerenciadordeprodutos.Communication.DTOs.ProductDTO;
+import com.vitor.gerenciadordeprodutos.Communication.DTOs.ProductProductionDTO;
 import com.vitor.gerenciadordeprodutos.Communication.Response.PageResponse;
 import com.vitor.gerenciadordeprodutos.Communication.Response.ResponseFactory;
 import com.vitor.gerenciadordeprodutos.Communication.Response.StandardResponse;
@@ -78,5 +79,22 @@ public class ProductController {
                 ResponseFactory.ok(null, "Product deleted successfully")
         );
     }
+
+    @GetMapping("/production")
+    public ResponseEntity<StandardResponse<PageResponse<ProductProductionDTO>>> paginateProduction(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int pageSize
+    ) {
+        Page<ProductProductionDTO> result =
+                service.paginateProduction(page, pageSize);
+
+        return ResponseEntity.ok(
+                ResponseFactory.ok(
+                        PageResponse.from(result),
+                        "Products production capacity"
+                )
+        );
+    }
+
 
 }

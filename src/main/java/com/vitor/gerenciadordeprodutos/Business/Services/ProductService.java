@@ -3,6 +3,7 @@ package com.vitor.gerenciadordeprodutos.Business.Services;
 import com.vitor.gerenciadordeprodutos.Business.Mappers.ProductMapper;
 import com.vitor.gerenciadordeprodutos.Communication.DTOs.ProductDTO;
 import com.vitor.gerenciadordeprodutos.Communication.DTOs.ProductMaterialDTO;
+import com.vitor.gerenciadordeprodutos.Communication.DTOs.ProductProductionDTO;
 import com.vitor.gerenciadordeprodutos.Domain.Interfaces.ProductServiceInterface;
 import com.vitor.gerenciadordeprodutos.Domain.Models.ProductMaterialModel;
 import com.vitor.gerenciadordeprodutos.Domain.Models.ProductModel;
@@ -124,5 +125,35 @@ public class ProductService implements ProductServiceInterface {
                 .orElseThrow(() -> new EntityNotFoundException("Product not found"));
 
         repository.delete(product);
+    }
+
+    @Override
+    public Page<ProductProductionDTO> paginateProduction(int page, int pageSize) {
+        Pageable pageable = PageRequest.of(page, pageSize);
+
+        Page<ProductModel> products = repository.findAll(pageable);
+
+        return products.map(product -> {
+
+            int producibleAmount = product.getMaterials().stream()
+                    .map(pm -> {
+                        int available = pm.getRawMaterial().getAmount();
+                        int required = pm.getRequiredQuantity();
+
+                        if (required <= 0) {
+                            return Integer.MAX_VALUE;
+                        }
+
+                        return available / required;
+                    })
+                    .min(Integer::compareTo)
+                    .orElse(0);
+
+            return new ProductProductionDTO(
+                    product.getId(),
+                    product.getName(),
+                    producibleAmount
+            );
+        });
     }
 }
