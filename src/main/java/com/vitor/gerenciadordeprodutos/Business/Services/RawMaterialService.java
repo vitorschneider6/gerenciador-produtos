@@ -57,4 +57,11 @@ public class RawMaterialService implements RawMaterialServiceInterface {
         return repository.save(material);
     }
 
+    @Override
+    public void delete(Long id) {
+        RawMaterialModel material = repository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Material not found"));
+
+        repository.delete(material);
+    }
 }

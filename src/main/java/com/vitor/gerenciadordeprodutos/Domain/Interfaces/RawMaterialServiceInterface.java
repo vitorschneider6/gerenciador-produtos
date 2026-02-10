@@ -9,4 +9,5 @@ public interface RawMaterialServiceInterface {
     RawMaterialModel getById(Long id);
     RawMaterialModel create(RawMaterialDTO dto);
     RawMaterialModel update(Long id, RawMaterialDTO dto);
+    void delete(Long id);
 }
