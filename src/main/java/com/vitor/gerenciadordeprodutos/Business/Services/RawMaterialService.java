@@ -39,5 +39,22 @@ public class RawMaterialService implements RawMaterialServiceInterface {
             throw new BusinessException("Raw material already exists");
         }
 
-        return repository.save(model);    }
+        return repository.save(model);
+    }
+
+    @Override
+    public RawMaterialModel update(Long id, RawMaterialDTO dto) {
+
+        RawMaterialModel material = repository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Material not found"));
+
+        if (!material.getName().equals(dto.getName())
+                && repository.existsByName(dto.getName())) {
+            throw new BusinessException("Raw material name already exists");
+        }
+
+        mapper.updateEntity(material, dto);
+        return repository.save(material);
+    }
+
 }

@@ -1,5 +1,6 @@
 package com.vitor.gerenciadordeprodutos.Domain.Models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -25,6 +26,7 @@ public class ProductModel {
             cascade = CascadeType.ALL,
             orphanRemoval = true
     )
+    @JsonIgnore
     private Set<ProductMaterialModel> materials = new HashSet<>();
 
 }

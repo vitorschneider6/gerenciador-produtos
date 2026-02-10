@@ -8,5 +8,6 @@ public interface RawMaterialServiceInterface {
     Page<RawMaterialModel> paginateMaterials(int page, int pageSize);
     RawMaterialModel getById(Long id);
     RawMaterialModel create(RawMaterialDTO dto);
+    RawMaterialModel update(Long id, RawMaterialDTO dto);
 
 }

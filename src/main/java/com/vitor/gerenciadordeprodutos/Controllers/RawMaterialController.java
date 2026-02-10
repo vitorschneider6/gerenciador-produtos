@@ -52,4 +52,17 @@ public class RawMaterialController {
                 ResponseFactory.ok(newMaterial, "New material created", HttpStatus.CREATED)
         );
     }
+
+    @PutMapping("{id}")
+    public ResponseEntity<StandardResponse<RawMaterialModel>> update(
+            @PathVariable Long id,
+            @RequestBody RawMaterialDTO dto
+    ) {
+        var updated = service.update(id, dto);
+
+        return ResponseEntity.ok(
+                ResponseFactory.ok(updated, "Material updated successfully")
+        );
+    }
+
 }

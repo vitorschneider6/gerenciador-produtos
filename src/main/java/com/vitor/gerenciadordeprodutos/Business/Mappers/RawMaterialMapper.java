@@ -23,4 +23,10 @@ public class RawMaterialMapper {
 
         return dto;
     }
+
+    public void updateEntity(RawMaterialModel model, RawMaterialDTO dto) {
+        model.setName(dto.getName());
+        model.setDescription(dto.getDescription());
+        model.setAmount(dto.getAmount());
+    }
 }

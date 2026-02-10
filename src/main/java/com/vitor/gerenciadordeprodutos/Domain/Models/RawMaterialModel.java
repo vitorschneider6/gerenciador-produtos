@@ -1,5 +1,6 @@
 package com.vitor.gerenciadordeprodutos.Domain.Models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -22,5 +23,6 @@ public class RawMaterialModel {
     private String description;
     private int amount;
     @OneToMany(mappedBy = "rawMaterial")
+    @JsonIgnore
     private Set<ProductMaterialModel> products = new HashSet<>();
 }
