@@ -89,10 +89,11 @@ public class ProductController {
     @GetMapping("/production")
     public ResponseEntity<StandardResponse<PageResponse<ProductProductionDTO>>> paginateProduction(
             @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "10") int pageSize
+            @RequestParam(defaultValue = "10") int pageSize,
+            @RequestParam(defaultValue = "") String name
     ) {
         Page<ProductProductionDTO> result =
-                service.paginateProduction(page, pageSize);
+                service.paginateProduction(page, pageSize, name);
 
         return ResponseEntity.ok(
                 ResponseFactory.ok(
@@ -101,6 +102,4 @@ public class ProductController {
                 )
         );
     }
-
-
 }

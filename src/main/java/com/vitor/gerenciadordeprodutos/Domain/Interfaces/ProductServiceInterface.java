@@ -13,5 +13,5 @@ public interface ProductServiceInterface {
     ProductModel update(Long id, ProductDTO dto);
     void delete(Long id);
 
-    Page<ProductProductionDTO> paginateProduction(int page, int pageSize);
+    Page<ProductProductionDTO> paginateProduction(int page, int pageSize, String name);
 }

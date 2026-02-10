@@ -130,10 +130,16 @@ public class ProductService implements ProductServiceInterface {
     }
 
     @Override
-    public Page<ProductProductionDTO> paginateProduction(int page, int pageSize) {
+    public Page<ProductProductionDTO> paginateProduction(int page, int pageSize, String name) {
         Pageable pageable = PageRequest.of(page, pageSize);
 
-        Page<ProductModel> products = repository.findAll(pageable);
+        Page<ProductModel> products;
+
+        if (name != null && !name.isEmpty()) {
+            products = repository.findByNameContainingIgnoreCase(name, pageable);
+        } else {
+            products = repository.findAll(pageable);
+        }
 
         return products.map(product -> {
 
