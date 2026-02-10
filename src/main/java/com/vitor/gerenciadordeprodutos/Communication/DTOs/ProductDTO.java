@@ -3,7 +3,6 @@ package com.vitor.gerenciadordeprodutos.Communication.DTOs;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
 import java.util.List;
 
 @Data

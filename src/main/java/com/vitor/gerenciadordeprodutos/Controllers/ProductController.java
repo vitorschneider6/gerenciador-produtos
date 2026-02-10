@@ -1,5 +1,6 @@
 package com.vitor.gerenciadordeprodutos.Controllers;
 
+import com.vitor.gerenciadordeprodutos.Business.Mappers.ProductMapper;
 import com.vitor.gerenciadordeprodutos.Communication.DTOs.ProductDTO;
 import com.vitor.gerenciadordeprodutos.Communication.DTOs.ProductProductionDTO;
 import com.vitor.gerenciadordeprodutos.Communication.Response.PageResponse;
@@ -22,6 +23,9 @@ public class ProductController {
     @Autowired
     private ProductServiceInterface service;
 
+    @Autowired
+    private ProductMapper mapper;
+
     @GetMapping
     public ResponseEntity<StandardResponse<PageResponse<ProductModel>>> paginate(
             @RequestParam(defaultValue = "0") int page,
@@ -36,13 +40,14 @@ public class ProductController {
     }
 
     @GetMapping("{id}")
-    public ResponseEntity<StandardResponse<ProductModel>> getById(
+    public ResponseEntity<StandardResponse<ProductDTO>> getById(
             @PathVariable Long id
     ){
         var product = service.getById(id);
+        var dto = mapper.map(product);
 
         return ResponseEntity.ok(
-                ResponseFactory.ok(product, "Product found")
+                ResponseFactory.ok(dto, "Product found")
         );
     }
 
