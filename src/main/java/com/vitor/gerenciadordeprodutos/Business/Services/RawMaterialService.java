@@ -21,13 +21,18 @@ public class RawMaterialService implements RawMaterialServiceInterface {
     private RawMaterialMapper mapper;
 
     @Override
-    public Page<RawMaterialModel> paginateMaterials(int page, int pageSize) {
+    public Page<RawMaterialModel> paginateMaterials(int page, int pageSize, String name) {
         if (pageSize == 0) {
             var allMaterials = repository.findAll();
             return new org.springframework.data.domain.PageImpl<>(allMaterials);
         }
 
         Pageable pageable = PageRequest.of(page, pageSize);
+
+        if (name != null && !name.isEmpty()) {
+            return repository.findByNameContainingIgnoreCase(name, pageable);
+        }
+
         return repository.findAll(pageable);
     }
 

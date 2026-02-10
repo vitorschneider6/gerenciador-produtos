@@ -5,7 +5,7 @@ import com.vitor.gerenciadordeprodutos.Domain.Models.RawMaterialModel;
 import org.springframework.data.domain.Page;
 
 public interface RawMaterialServiceInterface {
-    Page<RawMaterialModel> paginateMaterials(int page, int pageSize);
+    Page<RawMaterialModel> paginateMaterials(int page, int pageSize, String name);
     RawMaterialModel getById(Long id);
     RawMaterialModel create(RawMaterialDTO dto);
     RawMaterialModel update(Long id, RawMaterialDTO dto);

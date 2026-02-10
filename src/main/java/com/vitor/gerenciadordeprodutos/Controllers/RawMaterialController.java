@@ -21,9 +21,10 @@ public class RawMaterialController {
     @GetMapping
     public ResponseEntity<StandardResponse<PageResponse<RawMaterialModel>>> paginate(
         @RequestParam(defaultValue = "0") int page,
-        @RequestParam(defaultValue = "10") int pageSize
+        @RequestParam(defaultValue = "10") int pageSize,
+        @RequestParam(defaultValue = "") String name
     ){
-        Page<RawMaterialModel> materials = service.paginateMaterials(page, pageSize);
+        Page<RawMaterialModel> materials = service.paginateMaterials(page, pageSize, name);
         var response = PageResponse.from(materials);
 
         return ResponseEntity.ok(
