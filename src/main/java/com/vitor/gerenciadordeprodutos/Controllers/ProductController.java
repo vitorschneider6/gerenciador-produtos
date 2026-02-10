@@ -55,4 +55,17 @@ public class ProductController {
                 ResponseFactory.ok(product, "New product created", HttpStatus.CREATED)
         );
     }
+
+    @PutMapping("{id}")
+    public ResponseEntity<StandardResponse<ProductModel>> update(
+            @PathVariable Long id,
+            @RequestBody ProductDTO dto
+    ) {
+        var product = service.update(id, dto);
+
+        return ResponseEntity.ok(
+                ResponseFactory.ok(product, "Product updated")
+        );
+    }
+
 }

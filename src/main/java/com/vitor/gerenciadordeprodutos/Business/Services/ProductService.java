@@ -72,6 +72,50 @@ public class ProductService implements ProductServiceInterface {
             product.setMaterials(productMaterials);
         }
 
+        ProductModel saved = repository.save(product);
+        saved.setMaterials(null);
+
+        return saved;
+    }
+
+    @Override
+    public ProductModel update(Long id, ProductDTO dto) {
+
+        ProductModel product = repository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Product not found"));
+
+        product.setName(dto.getName());
+        product.setDescription(dto.getDescription());
+        product.setActive(dto.getActive());
+
+        product.getMaterials().clear();
+
+        if (dto.getMaterials() != null && !dto.getMaterials().isEmpty()) {
+
+            Set<ProductMaterialModel> productMaterials = new HashSet<>();
+
+            for (ProductMaterialDTO item : dto.getMaterials()) {
+
+                RawMaterialModel rawMaterial = rawMaterialRepository
+                        .findById(item.getId())
+                        .orElseThrow(() ->
+                                new EntityNotFoundException(
+                                        "Raw material not found: " + item.getId()
+                                )
+                        );
+
+                ProductMaterialModel pm = new ProductMaterialModel();
+                pm.setProduct(product);
+                pm.setRawMaterial(rawMaterial);
+                pm.setRequiredQuantity(item.getRequiredQuantity());
+
+                productMaterials.add(pm);
+            }
+
+            product.getMaterials().addAll(productMaterials);
+        }
+
         return repository.save(product);
     }
+
 }

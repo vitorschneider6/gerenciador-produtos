@@ -9,5 +9,5 @@ public interface ProductServiceInterface {
     Page<ProductModel> paginateProducts(int page, int pageSize);
     ProductModel getById(Long id);
     ProductModel create(ProductDTO dto);
-
+    ProductModel update(Long id, ProductDTO dto);
 }
