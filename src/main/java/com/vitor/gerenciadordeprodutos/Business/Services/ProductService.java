@@ -118,4 +118,11 @@ public class ProductService implements ProductServiceInterface {
         return repository.save(product);
     }
 
+    @Override
+    public void delete(Long id) {
+        ProductModel product = repository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Product not found"));
+
+        repository.delete(product);
+    }
 }
