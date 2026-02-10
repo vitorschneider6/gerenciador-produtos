@@ -44,16 +44,20 @@ public class RawMaterialService implements RawMaterialServiceInterface {
 
     @Override
     public RawMaterialModel create(RawMaterialDTO dto) {
+        if(dto.getAmount() < 0)
+            throw new BusinessException("Stock must be upper than 0");
+
         var model = mapper.map(dto);
-        if (repository.existsByName(model.getName())) {
+        if (repository.existsByName(model.getName()))
             throw new BusinessException("Raw material already exists");
-        }
 
         return repository.save(model);
     }
 
     @Override
     public RawMaterialModel update(Long id, RawMaterialDTO dto) {
+        if(dto.getAmount() < 0)
+            throw new BusinessException("Stock must be upper than 0");
 
         RawMaterialModel material = repository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Material not found"));
