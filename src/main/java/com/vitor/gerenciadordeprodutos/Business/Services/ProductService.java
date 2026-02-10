@@ -2,7 +2,9 @@ package com.vitor.gerenciadordeprodutos.Business.Services;
 
 import com.vitor.gerenciadordeprodutos.Business.Mappers.ProductMapper;
 import com.vitor.gerenciadordeprodutos.Communication.DTOs.ProductDTO;
+import com.vitor.gerenciadordeprodutos.Communication.DTOs.ProductMaterialDTO;
 import com.vitor.gerenciadordeprodutos.Domain.Interfaces.ProductServiceInterface;
+import com.vitor.gerenciadordeprodutos.Domain.Models.ProductMaterialModel;
 import com.vitor.gerenciadordeprodutos.Domain.Models.ProductModel;
 import com.vitor.gerenciadordeprodutos.Domain.Models.RawMaterialModel;
 import com.vitor.gerenciadordeprodutos.Infrastructure.Repositories.ProductRepository;
@@ -47,14 +49,27 @@ public class ProductService implements ProductServiceInterface {
 
         if (dto.getMaterials() != null && !dto.getMaterials().isEmpty()) {
 
-            Set<RawMaterialModel> materials =
-                    new HashSet<>(rawMaterialRepository.findAllById(dto.getMaterials()));
+            Set<ProductMaterialModel> productMaterials = new HashSet<>();
 
-            if (materials.size() != dto.getMaterials().size()) {
-                throw new EntityNotFoundException("One or more raw materials not found");
+            for (ProductMaterialDTO item : dto.getMaterials()) {
+
+                RawMaterialModel rawMaterial = rawMaterialRepository
+                        .findById(item.getId())
+                        .orElseThrow(() ->
+                                new EntityNotFoundException(
+                                        "Raw material not found: " + item.getId()
+                                )
+                        );
+
+                ProductMaterialModel pm = new ProductMaterialModel();
+                pm.setProduct(product);
+                pm.setRawMaterial(rawMaterial);
+                pm.setRequiredQuantity(item.getRequiredQuantity());
+
+                productMaterials.add(pm);
             }
 
-            product.setMaterials(materials);
+            product.setMaterials(productMaterials);
         }
 
         return repository.save(product);

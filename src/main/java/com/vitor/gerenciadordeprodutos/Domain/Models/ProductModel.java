@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -19,11 +20,11 @@ public class ProductModel {
     private String name;
     private String description;
     private boolean active;
-    @ManyToMany
-    @JoinTable(
-            name = "tb_product_material",
-            joinColumns = @JoinColumn(name = "product_id"),
-            inverseJoinColumns = @JoinColumn(name = "material_id"))
-    private Set<RawMaterialModel> materials;
+    @OneToMany(
+            mappedBy = "product",
+            cascade = CascadeType.ALL,
+            orphanRemoval = true
+    )
+    private Set<ProductMaterialModel> materials = new HashSet<>();
 
 }

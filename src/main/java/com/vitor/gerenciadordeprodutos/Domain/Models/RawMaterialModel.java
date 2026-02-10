@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -20,6 +21,6 @@ public class RawMaterialModel {
     private String name;
     private String description;
     private int amount;
-    @ManyToMany(mappedBy = "materials")
-    private Set<ProductModel> products;
+    @OneToMany(mappedBy = "rawMaterial")
+    private Set<ProductMaterialModel> products = new HashSet<>();
 }
