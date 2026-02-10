@@ -33,8 +33,13 @@ public class ProductService implements ProductServiceInterface {
     private ProductMapper mapper;
 
     @Override
-    public Page<ProductModel> paginateProducts(int page, int pageSize) {
+    public Page<ProductModel> paginateProducts(int page, int pageSize, String name) {
         Pageable pageable = PageRequest.of(page, pageSize);
+
+        if (name != null && !name.isEmpty()) {
+            return repository.findByNameContainingIgnoreCase(name, pageable);
+        }
+
         return repository.findAll(pageable);
     }
 

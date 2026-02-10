@@ -7,7 +7,7 @@ import org.springframework.data.domain.Page;
 
 
 public interface ProductServiceInterface {
-    Page<ProductModel> paginateProducts(int page, int pageSize);
+    Page<ProductModel> paginateProducts(int page, int pageSize, String name);
     ProductModel getById(Long id);
     ProductModel create(ProductDTO dto);
     ProductModel update(Long id, ProductDTO dto);

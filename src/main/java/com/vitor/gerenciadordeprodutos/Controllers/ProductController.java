@@ -29,9 +29,10 @@ public class ProductController {
     @GetMapping
     public ResponseEntity<StandardResponse<PageResponse<ProductModel>>> paginate(
             @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "10") int pageSize
+            @RequestParam(defaultValue = "10") int pageSize,
+            @RequestParam(defaultValue = "") String name
     ){
-        Page<ProductModel> products = service.paginateProducts(page, pageSize);
+        Page<ProductModel> products = service.paginateProducts(page, pageSize, name);
         var response = PageResponse.from(products);
 
         return ResponseEntity.ok(
