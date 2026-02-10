@@ -8,10 +8,10 @@ import com.vitor.gerenciadordeprodutos.Domain.Models.ProductModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import javax.swing.text.html.Option;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/products")
@@ -29,6 +29,17 @@ public class ProductController {
 
         return ResponseEntity.ok(
                 ResponseFactory.ok(response, "All products.")
+        );
+    }
+
+    @GetMapping("{id}")
+    public ResponseEntity<StandardResponse<ProductModel>> getById(
+            @PathVariable Long id
+    ){
+        var product = service.getById(id);
+
+        return ResponseEntity.ok(
+                ResponseFactory.ok(product, "Product found")
         );
     }
 }
