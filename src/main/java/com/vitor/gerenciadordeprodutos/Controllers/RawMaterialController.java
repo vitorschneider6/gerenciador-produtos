@@ -1,13 +1,14 @@
 package com.vitor.gerenciadordeprodutos.Controllers;
 
+import com.vitor.gerenciadordeprodutos.Communication.DTOs.RawMaterialDTO;
 import com.vitor.gerenciadordeprodutos.Communication.Response.PageResponse;
 import com.vitor.gerenciadordeprodutos.Communication.Response.ResponseFactory;
 import com.vitor.gerenciadordeprodutos.Communication.Response.StandardResponse;
 import com.vitor.gerenciadordeprodutos.Domain.Interfaces.RawMaterialServiceInterface;
-import com.vitor.gerenciadordeprodutos.Domain.Models.ProductModel;
 import com.vitor.gerenciadordeprodutos.Domain.Models.RawMaterialModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -38,6 +39,17 @@ public class RawMaterialController {
 
         return ResponseEntity.ok(
                 ResponseFactory.ok(material, "Material found")
+        );
+    }
+
+    @PostMapping
+    public ResponseEntity<StandardResponse<RawMaterialModel>> create(
+            @RequestBody RawMaterialDTO dto
+    ){
+        var newMaterial = service.create(dto);
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(
+                ResponseFactory.ok(newMaterial, "New material created", HttpStatus.CREATED)
         );
     }
 }
