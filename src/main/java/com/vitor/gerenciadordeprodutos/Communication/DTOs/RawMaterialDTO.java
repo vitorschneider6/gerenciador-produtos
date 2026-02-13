@@ -5,7 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.List;
+import java.math.BigDecimal;
 
 @Data
 @AllArgsConstructor
@@ -14,5 +14,6 @@ public class RawMaterialDTO {
     private Long id;
     private String name;
     private String description;
+    private BigDecimal value;
     private int amount;
 }
