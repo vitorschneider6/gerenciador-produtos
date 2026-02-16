@@ -14,6 +14,5 @@ public class RawMaterialDTO {
     private Long id;
     private String name;
     private String description;
-    private BigDecimal value;
     private int amount;
 }

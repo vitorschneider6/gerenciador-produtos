@@ -7,7 +7,9 @@ import com.vitor.gerenciadordeprodutos.Communication.DTOs.ProductProductionDTO;
 import com.vitor.gerenciadordeprodutos.Domain.Interfaces.ProductServiceInterface;
 import com.vitor.gerenciadordeprodutos.Domain.Models.ProductMaterialModel;
 import com.vitor.gerenciadordeprodutos.Domain.Models.ProductModel;
+import com.vitor.gerenciadordeprodutos.Domain.Models.ProductProductionView;
 import com.vitor.gerenciadordeprodutos.Domain.Models.RawMaterialModel;
+import com.vitor.gerenciadordeprodutos.Infrastructure.Repositories.ProductProductionViewRepository;
 import com.vitor.gerenciadordeprodutos.Infrastructure.Repositories.ProductRepository;
 import com.vitor.gerenciadordeprodutos.Infrastructure.Repositories.RawMaterialRepository;
 import jakarta.persistence.EntityNotFoundException;
@@ -15,6 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.HashSet;
@@ -28,6 +31,9 @@ public class ProductService implements ProductServiceInterface {
 
     @Autowired
     private RawMaterialRepository rawMaterialRepository;
+
+    @Autowired
+    private ProductProductionViewRepository productionRepository;
 
     @Autowired
     private ProductMapper mapper;
@@ -131,37 +137,24 @@ public class ProductService implements ProductServiceInterface {
 
     @Override
     public Page<ProductProductionDTO> paginateProduction(int page, int pageSize, String name) {
-        Pageable pageable = PageRequest.of(page, pageSize);
+        Pageable pageable = PageRequest.of(page, pageSize, Sort.by(Sort.Direction.DESC, "totalValue"));
 
-        Page<ProductModel> products;
+        Page<ProductProductionView> products;
 
         if (name != null && !name.isEmpty()) {
-            products = repository.findByNameContainingIgnoreCase(name, pageable);
+            products = productionRepository.findByActiveTrueAndNameContainingIgnoreCase(name, pageable);
         } else {
-            products = repository.findAll(pageable);
+            products = productionRepository.findByActiveTrue(pageable);
         }
 
-        return products.map(product -> {
-
-            int producibleAmount = product.getMaterials().stream()
-                    .map(pm -> {
-                        int available = pm.getRawMaterial().getAmount();
-                        int required = pm.getRequiredQuantity();
-
-                        if (required <= 0) {
-                            return Integer.MAX_VALUE;
-                        }
-
-                        return available / required;
-                    })
-                    .min(Integer::compareTo)
-                    .orElse(0);
-
-            return new ProductProductionDTO(
-                    product.getId(),
-                    product.getName(),
-                    producibleAmount
-            );
-        });
+        return products.map(p ->
+                new ProductProductionDTO(
+                        p.getProductId(),
+                        p.getName(),
+                        p.getPrice(),
+                        p.getTotalValue(),
+                        p.getProducibleAmount()
+                )
+        );
     }
 }
