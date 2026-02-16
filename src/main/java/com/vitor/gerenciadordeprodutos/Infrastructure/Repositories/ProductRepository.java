@@ -6,6 +6,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface ProductRepository extends JpaRepository<ProductModel, Long> {
-    Page<ProductModel> findByNameContainingIgnoreCase(String name, Pageable pageable);
+    Page<ProductModel> findByNameContainingIgnoreCaseOrCodeContainingIgnoreCase(String name, String code, Pageable pageable);
     boolean existsByCode(String code);
 }

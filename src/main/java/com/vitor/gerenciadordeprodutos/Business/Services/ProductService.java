@@ -44,7 +44,7 @@ public class ProductService implements ProductServiceInterface {
         Pageable pageable = PageRequest.of(page, pageSize);
 
         if (name != null && !name.isEmpty()) {
-            return repository.findByNameContainingIgnoreCase(name, pageable);
+            return repository.findByNameContainingIgnoreCaseOrCodeContainingIgnoreCase(name, name, pageable);
         }
 
         return repository.findAll(pageable);
