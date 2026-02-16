@@ -13,6 +13,7 @@ public class ProductMapper {
         ProductModel product = new ProductModel();
         product.setName(dto.getName());
         product.setDescription(dto.getDescription());
+        product.setCode(dto.getCode());
         product.setPrice(dto.getPrice());
         product.setActive(dto.getActive());
 
@@ -23,6 +24,7 @@ public class ProductMapper {
         ProductDTO dto = new ProductDTO();
         dto.setName(model.getName());
         dto.setDescription(model.getDescription());
+        dto.setCode(model.getCode());
         dto.setPrice(model.getPrice());
         dto.setActive(model.isActive());
         if (model.getMaterials() != null && !model.getMaterials().isEmpty()) {

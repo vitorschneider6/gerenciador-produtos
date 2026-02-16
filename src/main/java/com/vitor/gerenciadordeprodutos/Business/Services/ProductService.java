@@ -4,6 +4,7 @@ import com.vitor.gerenciadordeprodutos.Business.Mappers.ProductMapper;
 import com.vitor.gerenciadordeprodutos.Communication.DTOs.ProductDTO;
 import com.vitor.gerenciadordeprodutos.Communication.DTOs.ProductMaterialDTO;
 import com.vitor.gerenciadordeprodutos.Communication.DTOs.ProductProductionDTO;
+import com.vitor.gerenciadordeprodutos.Domain.Exceptions.BusinessException;
 import com.vitor.gerenciadordeprodutos.Domain.Interfaces.ProductServiceInterface;
 import com.vitor.gerenciadordeprodutos.Domain.Models.ProductMaterialModel;
 import com.vitor.gerenciadordeprodutos.Domain.Models.ProductModel;
@@ -57,6 +58,9 @@ public class ProductService implements ProductServiceInterface {
 
     @Override
     public ProductModel create(ProductDTO dto) {
+        if (repository.existsByCode(dto.getCode()))
+            throw new BusinessException("Code already exists");
+
         ProductModel product = mapper.map(dto);
 
         if (dto.getMaterials() != null && !dto.getMaterials().isEmpty()) {
@@ -92,9 +96,13 @@ public class ProductService implements ProductServiceInterface {
 
     @Override
     public ProductModel update(Long id, ProductDTO dto) {
-
         ProductModel product = repository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Product not found"));
+
+        if (!product.getCode().equals(dto.getCode())
+                && repository.existsByCode(dto.getCode())) {
+            throw new BusinessException("Code already exists");
+        }
 
         mapper.updateEntity(product, dto);
         product.getMaterials().clear();

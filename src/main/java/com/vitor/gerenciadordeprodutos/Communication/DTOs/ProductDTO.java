@@ -14,6 +14,7 @@ public class ProductDTO {
     private Long id;
     private String name;
     private String description;
+    private String code;
     private BigDecimal price;
     private Boolean active;
     private List<ProductMaterialDTO> materials;

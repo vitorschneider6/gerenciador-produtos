@@ -7,4 +7,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface ProductRepository extends JpaRepository<ProductModel, Long> {
     Page<ProductModel> findByNameContainingIgnoreCase(String name, Pageable pageable);
+    boolean existsByCode(String code);
 }

@@ -21,6 +21,7 @@ public class ProductModel {
     private Long id;
     private String name;
     private String description;
+    private String code;
     private BigDecimal price;
     private boolean active;
     @OneToMany(
