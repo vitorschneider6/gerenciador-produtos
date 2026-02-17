@@ -23,6 +23,8 @@ public class ProductProductionView {
     private Long productId;
     @Column(name = "name")
     private String name;
+    @Column(name = "code")
+    private String code;
     @Column(name = "price")
     private BigDecimal price;
     @Column(name = "producible_amount")

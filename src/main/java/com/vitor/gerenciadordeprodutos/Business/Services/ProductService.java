@@ -150,7 +150,7 @@ public class ProductService implements ProductServiceInterface {
         Page<ProductProductionView> products;
 
         if (name != null && !name.isEmpty()) {
-            products = productionRepository.findByActiveTrueAndNameContainingIgnoreCase(name, pageable);
+            products = productionRepository.findByActiveTrueAndNameContainingIgnoreCaseOrCodeContainingIgnoreCase(name, name, pageable);
         } else {
             products = productionRepository.findByActiveTrue(pageable);
         }
@@ -159,6 +159,7 @@ public class ProductService implements ProductServiceInterface {
                 new ProductProductionDTO(
                         p.getProductId(),
                         p.getName(),
+                        p.getCode(),
                         p.getPrice(),
                         p.getTotalValue(),
                         p.getProducibleAmount()

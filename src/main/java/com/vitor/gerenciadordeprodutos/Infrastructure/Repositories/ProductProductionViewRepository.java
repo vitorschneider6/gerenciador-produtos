@@ -7,8 +7,9 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface ProductProductionViewRepository extends JpaRepository<ProductProductionView, Long> {
     Page<ProductProductionView> findByActiveTrue(Pageable pageable);
-    Page<ProductProductionView> findByActiveTrueAndNameContainingIgnoreCase(
+    Page<ProductProductionView> findByActiveTrueAndNameContainingIgnoreCaseOrCodeContainingIgnoreCase(
             String name,
+            String code,
             Pageable pageable
     );
 

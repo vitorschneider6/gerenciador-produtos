@@ -12,6 +12,7 @@ import java.math.BigDecimal;
 public class ProductProductionDTO {
     private Long id;
     private String name;
+    private String code;
     private BigDecimal unitValue;
     private BigDecimal productionValue;
     private int producibleAmount;
