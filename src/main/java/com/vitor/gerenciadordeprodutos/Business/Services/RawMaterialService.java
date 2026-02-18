@@ -44,8 +44,11 @@ public class RawMaterialService implements RawMaterialServiceInterface {
 
     @Override
     public RawMaterialModel create(RawMaterialDTO dto) {
-        if(dto.getAmount() < 0)
+        if(dto.getAmount() <= 0)
             throw new BusinessException("Stock must be upper than 0");
+
+        if (repository.existsByName(dto.getName()))
+            throw new BusinessException("Raw material already exists");
 
         var model = mapper.map(dto);
         if (repository.existsByName(model.getName()))
@@ -56,7 +59,7 @@ public class RawMaterialService implements RawMaterialServiceInterface {
 
     @Override
     public RawMaterialModel update(Long id, RawMaterialDTO dto) {
-        if(dto.getAmount() < 0)
+        if(dto.getAmount() <= 0)
             throw new BusinessException("Stock must be upper than 0");
 
         RawMaterialModel material = repository.findById(id)
