@@ -28,14 +28,7 @@ Copie o arquivo .env.example para .env e substitua as variáveis:
 - **ALLOWED_ORIGINS**: URLs permitidas para CORS (separadas por vírgula)
   - Adicione aqui os endereços do seu frontend
 
-
-
-## Migrações de Banco de Dados
-
-Migrações disponíveis:
-- `V1__Create_part_and_product_tables.sql` - Criação das tabelas iniciais
-- `V2__Create_product_material_table_migration_to_new_table.sql` - Migração para nova estrutura
-
+  
 ## Endpoints da API
 
 A API fornece endpoints para gerenciar:
